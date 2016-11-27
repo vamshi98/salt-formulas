@@ -590,3 +590,28 @@ class _WithDeprecated(_DeprecationDecorator):
 
 
 with_deprecated = _WithDeprecated
+
+
+class JinjaFilter(object):
+    '''
+    This decorator is used to specify that a function is to be loaded as a
+    Jinja filter.
+    '''
+    salt_jinja_filters = {}
+
+    def __init__(self, name=None):
+        '''
+        '''
+        self.name = name
+
+    def __call__(self, function):
+        '''
+        '''
+        name = self.name or function.__name__
+        if name not in self.salt_jinja_filters:
+            log.debug('Marking "{0}" as a jinja filter'.format(name))
+            self.salt_jinja_filters[name] = function
+        return function
+
+
+jinja_filter = JinjaFilter

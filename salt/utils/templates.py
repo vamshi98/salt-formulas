@@ -29,6 +29,7 @@ from salt.exceptions import (
 import salt.utils.jinja
 import salt.utils.network
 from salt.utils.odict import OrderedDict
+from salt.utils.decorators import JinjaFilter
 from salt import __path__ as saltpath
 from salt.ext.six import string_types
 import salt.ext.six as six
@@ -359,6 +360,13 @@ def render_jinja_tmpl(tmplstr, context, tmplpath=None):
     jinja_env.filters['ip_host'] = salt.utils.network.ip_host  # return the network interface IP
     jinja_env.filters['network_hosts'] = salt.utils.network.network_hosts  # return the hosts within a network
     jinja_env.filters['network_size'] = salt.utils.network.network_size  # return the network size
+
+    for function_name in context['salt'].keys():
+        # Simply iterating over the keys forces the execution modules to load
+        # and process the jinja env decorator(s)
+        pass
+
+    jinja_env.filters.update(JinjaFilter.salt_jinja_filters)
 
     jinja_env.globals['odict'] = OrderedDict
     jinja_env.globals['show_full_context'] = salt.utils.jinja.show_full_context
