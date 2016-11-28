@@ -27,6 +27,7 @@ except ImportError:
 # Import salt libs
 import salt.utils
 from salt._compat import subprocess, ipaddress
+from salt.utils.decorators import jinja_filter
 
 log = logging.getLogger(__name__)
 
@@ -207,6 +208,7 @@ def is_ip(ip):
     return is_ipv4(ip) or is_ipv6(ip)
 
 
+@jinja_filter('is_ipv4')
 def is_ipv4(ip):
     '''
     Returns a bool telling if the value passed to it was a valid IPv4 address
