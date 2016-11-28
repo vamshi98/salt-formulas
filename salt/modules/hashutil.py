@@ -13,6 +13,7 @@ import hmac
 import salt.exceptions
 import salt.ext.six as six
 import salt.utils
+from salt.utils.decorators import jinja_filter
 
 if six.PY2:
     import StringIO
@@ -20,6 +21,7 @@ elif six.PY3:
     from io import StringIO
 
 
+@jinja_filter('hashutil_digest')
 def digest(instr, checksum='md5'):
     '''
     Return a checksum digest for a string

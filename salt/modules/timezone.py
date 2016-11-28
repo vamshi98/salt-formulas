@@ -16,6 +16,7 @@ import string
 import salt.utils
 import salt.utils.itertools
 from salt.exceptions import SaltInvocationError, CommandExecutionError
+from salt.utils.decorators import jinja_filter
 
 log = logging.getLogger(__name__)
 
@@ -259,6 +260,7 @@ def set_zone(timezone):
     return True
 
 
+@jinja_filter('timezone_compare')
 def zone_compare(timezone):
     '''
     Compares the given timezone name with the system timezone name.
