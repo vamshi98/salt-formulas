@@ -27,6 +27,7 @@ import salt
 import salt.utils
 import salt.utils.url
 import salt.fileclient
+from salt.utils.decorators import jinja_filter
 from salt.utils.odict import OrderedDict
 
 log = logging.getLogger(__name__)
@@ -171,6 +172,7 @@ class PrintableDict(OrderedDict):
         return '{' + ', '.join(output) + '}'
 
 
+@jinja_filter('sequence')
 def ensure_sequence_filter(data):
     '''
     Ensure sequenced data.
