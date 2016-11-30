@@ -205,6 +205,24 @@ def ensure_sequence_filter(data):
     return data
 
 
+@jinja_filter()
+def regex_escape(value):
+    return re.escape(value)
+
+
+@jinja_filter()
+def unique(values):
+    ret = None
+    if isinstance(values, collections.Hashable):
+        ret = set(values)
+    else:
+        ret = []
+        for value in values:
+            if value not in ret:
+                ret.append(value)
+    return ret
+
+
 @jinja2.contextfunction
 def show_full_context(ctx):
     return ctx
@@ -371,7 +389,7 @@ class SerializerExtension(Extension, object):
     '''
 
     tags = set(['load_yaml', 'load_json', 'import_yaml', 'import_json',
-                'load_text', 'import_text', 'regex_escape', 'unique'])
+                'load_text', 'import_text'])
 
     def __init__(self, environment):
         super(SerializerExtension, self).__init__(environment)
@@ -383,8 +401,6 @@ class SerializerExtension(Extension, object):
             'load_yaml': self.load_yaml,
             'load_json': self.load_json,
             'load_text': self.load_text,
-            'regex_escape': self.regex_escape,
-            'unique': self.unique,
         })
 
         if self.environment.finalize is None:
@@ -572,17 +588,3 @@ class SerializerExtension(Extension, object):
             ).set_lineno(lineno)
         ]
     # pylint: enable=E1120,E1121
-
-    def regex_escape(self, value):
-        return re.escape(value)
-
-    def unique(self, values):
-        ret = None
-        if isinstance(values, collections.Hashable):
-            ret = set(values)
-        else:
-            ret = []
-            for value in values:
-                if value not in ret:
-                    ret.append(value)
-        return ret
