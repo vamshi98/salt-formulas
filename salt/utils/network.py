@@ -229,6 +229,7 @@ def is_ipv6(ip):
         return False
 
 
+@jinja_filter('is_ip')
 def is_ip_filter(ip, options=None):
     '''
     Returns a bool telling if the passed IP is a valid IPv4 or IPv6 address.
@@ -331,6 +332,7 @@ def _is_ipv(ip, version, options=None):
     return _ip_options(ip_obj, version, options=options)
 
 
+@jinja_filter('is_ipv4')
 def is_ipv4_filter(ip, options=None):
     '''
     Returns a bool telling if the value passed to it was a valid IPv4 address.
@@ -347,6 +349,7 @@ def is_ipv4_filter(ip, options=None):
     return _is_ipv(ip, 4, options=options)
 
 
+@jinja_filter('is_ipv6')
 def is_ipv6_filter(ip, options=None):
     '''
     Returns a bool telling if the value passed to it was a valid IPv6 address.
@@ -386,6 +389,7 @@ def _ipv_filter(value, version, options=None):
     return None
 
 
+@jinja_filter()
 def ipv4(value, options=None):
     '''
     Filters a list and returns IPv4 values only.
@@ -393,6 +397,7 @@ def ipv4(value, options=None):
     return _ipv_filter(value, 4, options=options)
 
 
+@jinja_filter()
 def ipv6(value, options=None):
     '''
     Filters a list and returns IPv6 values only.
@@ -400,6 +405,7 @@ def ipv6(value, options=None):
     return _ipv_filter(value, 6, options=options)
 
 
+@jinja_filter()
 def ipaddr(value, options=None):
     '''
     Filters and returns only valid IP objects.
@@ -431,6 +437,7 @@ def _filter_ipaddr(value, options, version=None):
     return ipaddr_filter_out
 
 
+@jinja_filter()
 def ip_host(value, options=None, version=None):
     '''
     Returns the interfaces IP address, e.g.: 192.168.0.1/28.
@@ -448,6 +455,7 @@ def _network_hosts(ip_addr_entry):
     ]
 
 
+@jinja_filter()
 def network_hosts(value, options=None, version=None):
     '''
     Return the list of hosts within a network.
@@ -467,6 +475,7 @@ def _network_size(ip_addr_entry):
     return ipaddress.ip_network(ip_addr_entry, strict=False).num_addresses
 
 
+@jinja_filter()
 def network_size(value, options=None, version=None):
     '''
     Get the size of a network.

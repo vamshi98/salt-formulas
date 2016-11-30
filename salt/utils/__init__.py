@@ -119,6 +119,7 @@ import salt.defaults.exitcodes
 import salt.log
 import salt.utils.dictupdate
 import salt.version
+from salt.utils.decorators import jinja_filter
 from salt.utils.decorators import memoize as real_memoize
 from salt.textformat import TextFormat
 from salt.exceptions import (
@@ -2206,6 +2207,7 @@ def date_cast(date):
             ' Consider installing timelib'.format(date))
 
 
+@jinja_filter('strftime')
 def date_format(date=None, format="%Y-%m-%d"):
     '''
     Converts date into a time-based string
