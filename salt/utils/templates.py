@@ -29,7 +29,7 @@ from salt.exceptions import (
 import salt.utils.jinja
 import salt.utils.network
 from salt.utils.odict import OrderedDict
-from salt.utils.decorators import JinjaFilter
+from salt.utils.decorators import jinja_filter
 from salt import __path__ as saltpath
 from salt.ext.six import string_types
 import salt.ext.six as six
@@ -351,7 +351,7 @@ def render_jinja_tmpl(tmplstr, context, tmplpath=None):
         # and process the jinja env decorator(s)
         pass
 
-    jinja_env.filters.update(JinjaFilter.salt_jinja_filters)
+    jinja_env.filters.update(getattr(jinja_filter, '__salt_jinja_filters__'))
 
     jinja_env.globals['odict'] = OrderedDict
     jinja_env.globals['show_full_context'] = salt.utils.jinja.show_full_context
