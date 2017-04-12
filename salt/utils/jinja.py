@@ -29,6 +29,7 @@ import salt
 import salt.utils
 import salt.utils.url
 import salt.fileclient
+from salt.utils.decorators import jinja_filter
 from salt.utils.odict import OrderedDict
 
 log = logging.getLogger(__name__)
@@ -179,6 +180,7 @@ class PrintableDict(OrderedDict):
         return '{' + ', '.join(output) + '}'
 
 
+@jinja_filter('sequence')
 def ensure_sequence_filter(data):
     '''
     Ensure sequenced data.
@@ -211,6 +213,7 @@ def ensure_sequence_filter(data):
     return data
 
 
+@jinja_filter('to_bool')
 def to_bool(val):
     '''
     Returns the logical value.
@@ -238,6 +241,7 @@ def to_bool(val):
     return False
 
 
+@jinja_filter('quote')
 def quote(txt):
     '''
     Wraps a text around quotes.
@@ -256,6 +260,7 @@ def quote(txt):
     return pipes.quote(txt)
 
 
+@jinja_filter('regex_search')
 def regex_search(txt, rgx, ignorecase=False, multiline=False):
     '''
     Searches for a pattern in the text.
@@ -282,6 +287,7 @@ def regex_search(txt, rgx, ignorecase=False, multiline=False):
     return obj.groups()
 
 
+@jinja_filter('regex_match')
 def regex_match(txt, rgx, ignorecase=False, multiline=False):
     '''
     Searches for a pattern in the text.
@@ -308,6 +314,7 @@ def regex_match(txt, rgx, ignorecase=False, multiline=False):
     return obj.groups()
 
 
+@jinja_filter('regex_replace')
 def regex_replace(txt, rgx, val, ignorecase=False, multiline=False):
     r'''
     Searches for a pattern and replaces with a sequence of characters.
@@ -332,6 +339,7 @@ def regex_replace(txt, rgx, val, ignorecase=False, multiline=False):
     return compiled_rgx.sub(val, txt)
 
 
+@jinja_filter('uuid')
 def uuid_(val):
     '''
     Returns a UUID corresponding to the value passed as argument.
@@ -372,6 +380,7 @@ def unique(lst):
     return lst
 
 
+@jinja_filter('min')
 def lst_min(obj):
     '''
     Returns the min value.
@@ -390,6 +399,7 @@ def lst_min(obj):
     return min(obj)
 
 
+@jinja_filter('max')
 def lst_max(obj):
     '''
     Returns the max value.
@@ -408,6 +418,7 @@ def lst_max(obj):
     return max(obj)
 
 
+@jinja_filter('avg')
 def lst_avg(lst):
     '''
     Returns the average value of a list.
@@ -428,6 +439,7 @@ def lst_avg(lst):
     return float(lst)
 
 
+@jinja_filter('union')
 def union(lst1, lst2):
     '''
     Returns the union of two lists.
@@ -448,6 +460,7 @@ def union(lst1, lst2):
     return unique(lst1 + lst2)
 
 
+@jinja_filter('intersect')
 def intersect(lst1, lst2):
     '''
     Returns the intersection of two lists.
@@ -468,6 +481,7 @@ def intersect(lst1, lst2):
     return unique([ele for ele in lst1 if ele in lst2])
 
 
+@jinja_filter('difference')
 def difference(lst1, lst2):
     '''
     Returns the difference of two lists.
@@ -488,6 +502,7 @@ def difference(lst1, lst2):
     return unique([ele for ele in lst1 if ele not in lst2])
 
 
+@jinja_filter('symmetric_difference')
 def symmetric_difference(lst1, lst2):
     '''
     Returns the symmetric difference of two lists.
