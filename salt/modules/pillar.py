@@ -28,6 +28,7 @@ log = logging.getLogger(__name__)
 def get(key,
         default=KeyError,
         merge=False,
+        deep_merge_lists=None,
         delimiter=DEFAULT_TARGET_DELIM,
         saltenv=None):
     '''
@@ -51,7 +52,7 @@ def get(key,
 
         pkg:apache
 
-    merge : False
+    merge : ``False``
         If ``True``, the retrieved values will be merged into the passed
         default. When the default and the retrieved value are both
         dictionaries, the dictionaries will be recursively merged.
@@ -61,6 +62,24 @@ def get(key,
             If the default and the retrieved value are not of the same type,
             then merging will be skipped and the retrieved value will be
             returned. Earlier releases raised an error in these cases.
+
+    deep_merge_lists : ``None``
+        Works in conjunction with ``merge`` when the returned value is a
+        dictionary. Determines whether to merge or overwrite lists in the
+        ``default`` and retrieved dictionaries. Can be used to override the
+        minion opt ``pillar_merge_lists``.
+
+        If ``None``, this parameter will be inherited from the minion opt
+        ``pillar_merge_lists``, and it will default to ``False`` if that option
+        is not present.
+
+        If ``True``, a list in the retrieved dictionary will be _merged_ into
+        the list in ``default``.
+
+        If ``False``, a list in the retrieved dictionary will overwrite the
+        list in ``default``.
+
+        ..versionadded:: 2016.11.5
 
     delimiter
         Specify an alternate delimiter to use when traversing a nested dict.
@@ -95,7 +114,8 @@ def get(key,
     if not __opts__.get('pillar_raise_on_missing'):
         if default is KeyError:
             default = ''
-    opt_merge_lists = __opts__.get('pillar_merge_lists', False)
+    opt_merge_lists = __opts__.get('pillar_merge_lists', False) if \
+        deep_merge_lists is None else deep_merge_lists
     pillar_dict = __pillar__ if saltenv is None else items(saltenv=saltenv)
 
     if merge:
